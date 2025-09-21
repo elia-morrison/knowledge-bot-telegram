@@ -51,6 +51,7 @@ class TelegramBot:
         )
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        logger.info("New client started")
         if update.message:
             await update.message.reply_text(
                 self.chat_agent.llm_provider.get_greeting_text()
@@ -89,7 +90,7 @@ class TelegramBot:
             await context.bot.set_message_reaction(
                 chat_id=chat_id,
                 message_id=update.message.message_id,
-                reaction="",
+                reaction=None,
             )
         except Exception as e:
             print(f"Failed to process message: {e}")
@@ -97,5 +98,6 @@ class TelegramBot:
                 self.chat_agent.llm_provider.get_exception_text()
             )
 
-    async def run(self):
-        await self.app.run_polling()
+    def run(self) -> None:
+        logger.info("Serving the bot...")
+        self.app.run_polling()

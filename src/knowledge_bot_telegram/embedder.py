@@ -1,4 +1,4 @@
-from fastembed import SparseEmbedding, SparseTextEmbedding, TextEmbedding
+from fastembed import SparseEmbedding, SparseTextEmbedding
 from sentence_transformers import SentenceTransformer
 from transformers import AutoTokenizer
 

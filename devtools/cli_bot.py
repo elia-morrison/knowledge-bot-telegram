@@ -1,12 +1,11 @@
 import asyncio
 import os
-from typing import Optional
 
 from dotenv import load_dotenv
 
 from knowledge_bot_telegram.chat import ChatAgent
 from knowledge_bot_telegram.embedder import Embedder
-from knowledge_bot_telegram.llm import LLMProvider, PROMPTS
+from knowledge_bot_telegram.llm import LLMProvider
 from knowledge_bot_telegram.schemas import Message, Role
 from knowledge_bot_telegram.vector_search import QdrantEngine
 

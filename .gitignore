@@ -11,3 +11,4 @@ wheels/
 
 .env
 qdrant_data/
+debug.ipynb
