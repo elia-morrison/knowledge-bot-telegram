@@ -32,7 +32,8 @@ docker compose up -d qdrant
 Создайте виртуальное окружение (с помощью [rye](https://rye.astral.sh/)) и запустите скрипт инициализации базы данных:
 
 ```
-rye sync
+# избегаем установки pytorch с CUDA (https://github.com/astral-sh/rye/issues/1210)
+UV_INDEX_STRATEGY="unsafe-best-match" rye sync
 rye run python devtools/seed_database.py
 ```
 

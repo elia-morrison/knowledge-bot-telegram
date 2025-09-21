@@ -40,3 +40,7 @@ packages = ["src/knowledge_bot_telegram"]
 [tool.mypy]
 files = ["src/knowledge_bot_telegram"]
 ignore_missing_imports = true
+
+[[tool.rye.sources]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cpu"
