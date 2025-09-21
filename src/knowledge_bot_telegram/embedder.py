@@ -29,7 +29,7 @@ class Embedder:
         )
         # we have a HUGE context window (8k),
         # but we don't want to use it all,
-        # because shorter docs have concentrated meaning
+        # because shorter docs have a more concentrated meaning
         self.max_tokens_per_chunk = 512 - self.token_overhead
         self.overlap_tokens = 50
 

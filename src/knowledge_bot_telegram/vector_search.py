@@ -72,7 +72,7 @@ class QdrantEngine:
                         indices=list(request.bm25_vector.keys()),
                         values=list(request.bm25_vector.values()),
                     ),
-                    using="sparse",
+                    using="bm25",
                     limit=100,
                 ),
                 models.Prefetch(
