@@ -6,14 +6,14 @@
 
 ### Подготовка данных (`data/`)
 
-Положите PDF файлы:
+Положите PDF-файлы:
 
 - `data/daichi.pdf`
 - `data/dantex.pdf`
 
 ### Файл окружения (`.env`)
 
-Укажите переменные (смотри `.env.example`):
+Укажите переменные (пример расположен в `.env.example`):
 
 ```.env
 TELEGRAM_BOT_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
