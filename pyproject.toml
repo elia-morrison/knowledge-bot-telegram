@@ -12,6 +12,7 @@ dependencies = [
     "pymupdf4llm>=0.0.27",
     "sentence-transformers>=5.1.0",
     "pyyaml>=6.0.2",
+    "python-telegram-bot>=22.4",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
