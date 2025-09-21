@@ -1,4 +1,5 @@
 from enum import StrEnum
+from fastembed import SparseEmbedding
 from pydantic import BaseModel, UUID4
 
 

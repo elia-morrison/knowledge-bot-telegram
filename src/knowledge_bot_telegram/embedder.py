@@ -1,7 +1,6 @@
-from fastembed import SparseTextEmbedding, TextEmbedding
-import os
-import tiktoken
+from fastembed import SparseEmbedding, SparseTextEmbedding, TextEmbedding
 from sentence_transformers import SentenceTransformer
+from transformers import AutoTokenizer
 
 from knowledge_bot_telegram.schemas import (
     Document,
@@ -21,8 +20,7 @@ class Embedder:
             "deepvk/USER2-base", device="cpu", truncate_dim=self.embedding_dimension
         )
         self.bm25_embedder = SparseTextEmbedding("Qdrant/bm25", language="russian")
-        self.tokenizer = self.dense_embedder.tokenizer
-
+        self.tokenizer = AutoTokenizer.from_pretrained("deepvk/USER2-base")
         self.source_prefix = "Источник: "
         self.chunk_prefix = " \n Отрывок: "
 
@@ -35,15 +33,18 @@ class Embedder:
         self.max_tokens_per_chunk = 512 - self.token_overhead
         self.overlap_tokens = 50
 
+    def sparse_to_dict(self, sparse_vector: SparseEmbedding) -> dict[int, float]:
+        return {i: v for i, v in zip(sparse_vector.indices, sparse_vector.values)}
+
     def embed_request(self, request: str) -> EmbeddedRequest:
-        dense_vector = self.dense_embedder.encode(request, prompt_name="search_query")[
-            0
-        ].tolist()
-        bm25_vector = self.bm25_embedder.encode(request)
+        dense_vector = self.dense_embedder.encode(
+            [request], prompt_name="search_query"
+        )[0].tolist()
+        bm25_vector = next(self.bm25_embedder.query_embed(request))
         return EmbeddedRequest(
             query=request,
             dense_vector=dense_vector,
-            bm25_vector=bm25_vector,
+            bm25_vector=self.sparse_to_dict(bm25_vector),
         )
 
     def embed_document(self, document: Document) -> list[EmbeddedDocumentChunk]:
@@ -52,7 +53,9 @@ class Embedder:
         dense_vectors = list(
             self.dense_embedder.encode(text, prompt_name="search_document")
         )
-        bm25_vectors = list(self.bm25_embedder.embed(text))
+        bm25_vectors = list(
+            self.sparse_to_dict(x) for x in self.bm25_embedder.embed(text)
+        )
         return [
             EmbeddedDocumentChunk(
                 doc_id=document.doc_id,
