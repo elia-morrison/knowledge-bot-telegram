@@ -1,5 +1,6 @@
 import os
 import re
+import traceback
 
 import httpx
 import yaml
@@ -41,8 +42,13 @@ class LLMProvider:
         return "\n======\n".join(relevant_chunks)
 
     async def _send_request(self, prompt: str) -> str:
+        auth_header = (
+            self.api_key
+            if self.api_key.lower().startswith("bearer ")
+            else f"Bearer {self.api_key}"
+        )
         headers = {
-            "Authorization": self.api_key,
+            "Authorization": auth_header,
         }
         data = {
             "model": self.model,
@@ -57,9 +63,20 @@ class LLMProvider:
 
         async with httpx.AsyncClient() as client:
             try:
-                response = await client.post(self.url, headers=headers, json=data)
-                print(response.json())
-                return response.json()["choices"][0]["message"]["content"]
+                response = await client.post(
+                    self.url, headers=headers, json=data, timeout=60.0
+                )
+                print(f"HTTP {response.status_code} {response.reason_phrase}")
+                print(f"Content-Type: {response.headers.get('content-type')}")
+
+                response_json = response.json()
+
+                if response.status_code >= 400:
+                    print(f"HTTP error body: {response_json}")
+                    response.raise_for_status()
+
+                return response_json["choices"][0]["message"]["content"]
             except Exception as e:
-                print(f"Error: {e}")
+                print(f"Exception type: {type(e).__name__}, repr: {repr(e)}")
+                traceback.print_exc()
                 return "Прости, что-то пошло не так. Попробуй позже."
