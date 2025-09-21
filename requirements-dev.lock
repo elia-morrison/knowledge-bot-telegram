@@ -94,6 +94,8 @@ markupsafe==3.0.2
 matplotlib-inline==0.1.7
     # via ipykernel
     # via ipython
+mistletoe==1.4.0
+    # via telegramify-markdown
 mmh3==5.2.0
     # via fastembed
 mpmath==1.3.0
@@ -236,6 +238,8 @@ stack-data==0.6.3
 sympy==1.14.0
     # via onnxruntime
     # via torch
+telegramify-markdown==0.5.1
+    # via knowledge-bot-telegram
 threadpoolctl==3.6.0
     # via scikit-learn
 tiktoken==0.11.0

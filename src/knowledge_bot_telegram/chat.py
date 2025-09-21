@@ -3,7 +3,7 @@ import logging
 import os
 import random
 
-from telegram.helpers import escape_markdown
+import telegramify_markdown
 from knowledge_bot_telegram.embedder import Embedder
 from knowledge_bot_telegram.llm import LLMProvider
 from knowledge_bot_telegram.schemas import Message, Role
@@ -89,7 +89,7 @@ class TelegramBot:
             )
             self.chat_histories[chat_id].append(Message(role=Role.agent, text=response))
             await update.message.reply_text(
-                escape_markdown(response, version=2), parse_mode="MarkdownV2"
+                telegramify_markdown.markdownify(response), parse_mode="MarkdownV2"
             )
             await context.bot.set_message_reaction(
                 chat_id=chat_id,
