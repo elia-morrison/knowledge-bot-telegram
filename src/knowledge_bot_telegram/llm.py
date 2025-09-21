@@ -32,6 +32,12 @@ class LLMProvider:
         print(prompt)
         return await self._send_request(prompt=prompt)
 
+    def get_greeting_text(self) -> str:
+        return PROMPTS["greeting"]
+
+    def get_exception_text(self) -> str:
+        return PROMPTS["exception"]
+
     def _postprocess_prompt(self, prompt: str) -> str:
         return re.sub(r"\n+", "\n", prompt)
 
@@ -79,4 +85,4 @@ class LLMProvider:
             except Exception as e:
                 print(f"Exception type: {type(e).__name__}, repr: {repr(e)}")
                 traceback.print_exc()
-                return "Прости, что-то пошло не так. Попробуй позже."
+                return self.get_exception_text()

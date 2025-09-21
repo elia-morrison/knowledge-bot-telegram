@@ -56,6 +56,8 @@ hpack==4.1.0
 httpcore==1.0.9
     # via httpx
 httpx==0.28.1
+    # via knowledge-bot-telegram
+    # via python-telegram-bot
     # via qdrant-client
 huggingface-hub==0.35.0
     # via fastembed
@@ -193,6 +195,8 @@ pymupdf4llm==0.0.27
 python-dateutil==2.9.0.post0
     # via jupyter-client
 python-dotenv==1.1.1
+    # via knowledge-bot-telegram
+python-telegram-bot==22.4
     # via knowledge-bot-telegram
 pyyaml==6.0.2
     # via huggingface-hub
