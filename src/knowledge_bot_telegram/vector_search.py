@@ -12,15 +12,16 @@ logger = logging.getLogger(__name__)
 
 
 class QdrantEngine:
-    def __init__(self):
+    def __init__(self, collection_name: str = "knowledge_bot_telegram"):
+        self.collection_name = collection_name
         self.qdrant_client = AsyncQdrantClient(url=os.environ["QDRANT_URL"])
 
-    async def check_collection_initialized(self, collection_name: str) -> bool:
-        return await self.qdrant_client.collection_exists(collection_name)
+    async def check_collection_initialized(self) -> bool:
+        return await self.qdrant_client.collection_exists(self.collection_name)
 
-    async def initialize_collection(self, collection_name: str, vector_size: int = 768):
+    async def initialize_collection(self, vector_size: int = 768):
         await self.qdrant_client.create_collection(
-            collection_name=collection_name,
+            collection_name=self.collection_name,
             vectors_config={
                 "dense": models.VectorParams(
                     size=vector_size, distance=models.Distance.COSINE
@@ -32,15 +33,15 @@ class QdrantEngine:
         )
 
         await self.qdrant_client.create_payload_index(
-            collection_name=collection_name,
+            collection_name=self.collection_name,
             field_name="doc_id",
             field_schema="keyword",
         )
 
-    async def upsert(self, collection_name: str, chunks: list[EmbeddedDocumentChunk]):
+    async def upsert(self, chunks: list[EmbeddedDocumentChunk]):
         for batched_chunks in itertools.batched(chunks, 100):
             await self.qdrant_client.upsert(
-                collection_name=collection_name,
+                collection_name=self.collection_name,
                 points=[
                     models.PointStruct(
                         id=uuid.uuid4().hex,
@@ -60,5 +61,28 @@ class QdrantEngine:
                 ],
             )
 
-    async def search(self, request: EmbeddedRequest, top_k: int = 10):
-        pass
+    async def search(self, request: EmbeddedRequest, top_k: int = 10) -> list[str]:
+        results = await self.qdrant_client.query_points(
+            collection_name=self.collection_name,
+            with_payload=True,
+            with_vectors=False,
+            prefetch=[
+                models.Prefetch(
+                    query=models.SparseVector(
+                        indices=list(request.bm25_vector.keys()),
+                        values=list(request.bm25_vector.values()),
+                    ),
+                    using="sparse",
+                    limit=100,
+                ),
+                models.Prefetch(
+                    query=request.dense_vector,
+                    using="dense",
+                    limit=100,
+                ),
+            ],
+            limit=top_k,
+            query=models.FusionQuery(fusion=models.Fusion.RRF),
+        )
+
+        return [result.payload["text"] for result in results.points if result.payload]

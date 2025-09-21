@@ -18,14 +18,12 @@ logger = logging.getLogger(__name__)
 
 async def main():
     logging.basicConfig(level=logging.INFO)
-    if await qdrant_engine.check_collection_initialized("knowledge_bot_telegram"):
+    if await qdrant_engine.check_collection_initialized():
         logger.info("Collection already initialized. Skipping initialization.")
         return
 
     logger.info("Initializing collection.")
-    await qdrant_engine.initialize_collection(
-        "knowledge_bot_telegram", vector_size=embedder.embedding_dimension
-    )
+    await qdrant_engine.initialize_collection(vector_size=embedder.embedding_dimension)
 
     logger.info("Embedding documents.")
     documents = [
@@ -46,7 +44,7 @@ async def main():
     ]
 
     for embedded_chunks in embedded_chunks_per_doc:
-        await qdrant_engine.upsert("knowledge_bot_telegram", embedded_chunks)
+        await qdrant_engine.upsert(embedded_chunks)
 
 
 if __name__ == "__main__":

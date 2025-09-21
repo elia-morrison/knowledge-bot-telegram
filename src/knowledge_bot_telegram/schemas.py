@@ -19,6 +19,12 @@ class EmbeddedDocumentChunk(DocumentChunk):
     bm25_vector: dict[int, float]
 
 
+class EmbeddedRequest(BaseModel):
+    query: str
+    dense_vector: list[float]
+    bm25_vector: dict[int, float]
+
+
 class Role(StrEnum):
     agent = "agent"
     user = "user"
@@ -27,9 +33,3 @@ class Role(StrEnum):
 class Message(BaseModel):
     role: Role
     text: str
-
-
-class EmbeddedRequest(BaseModel):
-    query: str
-    dense_vector: list[float]
-    bm25_vector: dict[int, float]

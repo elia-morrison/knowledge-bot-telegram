@@ -149,6 +149,7 @@ python-dotenv==1.1.1
     # via knowledge-bot-telegram
 pyyaml==6.0.2
     # via huggingface-hub
+    # via knowledge-bot-telegram
     # via transformers
 qdrant-client==1.15.1
     # via knowledge-bot-telegram
@@ -196,6 +197,7 @@ transformers==4.56.2
     # via sentence-transformers
 triton==3.4.0
     # via torch
+types-pyyaml==6.0.12.20250915
 typing-extensions==4.15.0
     # via anyio
     # via grpcio
