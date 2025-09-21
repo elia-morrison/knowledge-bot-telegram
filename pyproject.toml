@@ -10,6 +10,7 @@ dependencies = [
     "python-dotenv>=1.1.1",
     "fastembed>=0.7.3",
     "pymupdf4llm>=0.0.27",
+    "sentence-transformers>=5.1.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
@@ -20,10 +21,7 @@ build-backend = "hatchling.build"
 
 [tool.rye]
 managed = true
-dev-dependencies = [
-    "mypy>=1.18.2",
-    "ruff>=0.13.1",
-]
+dev-dependencies = ["mypy>=1.18.2", "ruff>=0.13.1"]
 
 [tool.hatch.metadata]
 allow-direct-references = true

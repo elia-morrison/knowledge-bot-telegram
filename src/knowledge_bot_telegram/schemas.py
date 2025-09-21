@@ -5,7 +5,7 @@ from pydantic import BaseModel, UUID4
 class Document(BaseModel):
     doc_id: UUID4
     name: str
-    uri: str
+    full_text: str
 
 
 class DocumentChunk(BaseModel):
