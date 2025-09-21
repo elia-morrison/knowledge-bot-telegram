@@ -14,6 +14,18 @@ services:
     volumes:
       - ./qdrant_data:/qdrant/storage
 
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - qdrant
+    environment:
+      QDRANT_URL: http://qdrant:6333
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      GPTUNNEL_API_KEY: ${GPTUNNEL_API_KEY}
+
 configs:
   qdrant_config:
     content: |
