@@ -11,23 +11,23 @@
 - `data/daichi.pdf`
 - `data/dantex.pdf`
 
-### Файл окружения (`.env` в корне, смотри `.env.example`)
+### Файл окружения (`.env`)
 
-Укажите переменные:
+Укажите переменные (смотри `.env.example`):
 
-```
+```.env
 TELEGRAM_BOT_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 GPTUNNEL_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 QDRANT_URL=http://localhost:6333
 ```
 
-### Шаг 1: запуск Qdrant
+### Шаг 1: Запуск Qdrant
 
 ```
 docker compose up -d qdrant
 ```
 
-### Шаг 2: инициализация коллекции
+### Шаг 2: Инициализация коллекции
 
 Создайте виртуальное окружение (с помощью [rye](https://rye.astral.sh/)) и запустите скрипт инициализации базы данных:
 
@@ -38,7 +38,7 @@ rye run python devtools/seed_database.py
 
 Примечание: скрипт пропускает инициализацию, если коллекция уже создана.
 
-### Шаг 3: запустить бота в Docker
+### Шаг 3: Запуск бота в Docker
 
 ```
 docker compose up -d --build bot
