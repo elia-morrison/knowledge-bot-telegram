@@ -8,6 +8,10 @@ WORKDIR /app
 
 COPY requirements.lock /app/requirements.lock
 COPY ./app.py ./pyproject.toml ./README.md /app
+
+
+RUN pip config set global.extra-index-url https://download.pytorch.org/whl/cpu
+
 RUN python -m pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.lock
 
