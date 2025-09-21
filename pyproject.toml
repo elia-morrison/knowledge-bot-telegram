@@ -5,9 +5,11 @@ description = "Add your description here"
 authors = [{ name = "ay", email = "artem.a.yats@gmail.com" }]
 dependencies = [
     "tiktoken>=0.11.0",
-    "pymupdf>=1.26.4",
     "qdrant-client>=1.15.1",
     "pydantic>=2.11.9",
+    "python-dotenv>=1.1.1",
+    "fastembed>=0.7.3",
+    "pymupdf4llm>=0.0.27",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"

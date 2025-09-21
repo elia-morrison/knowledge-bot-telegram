@@ -14,8 +14,8 @@ class DocumentChunk(BaseModel):
 
 
 class EmbeddedDocumentChunk(DocumentChunk):
-    dense_vector: list[float]  # for semantic search
-    sparse_vector: dict[int, float]  # for BM25
+    dense_vector: list[float]
+    bm25_vector: dict[int, float]
 
 
 class Role(StrEnum):
@@ -26,3 +26,9 @@ class Role(StrEnum):
 class Message(BaseModel):
     role: Role
     text: str
+
+
+class EmbeddedRequest(BaseModel):
+    query: str
+    dense_vector: list[float]
+    bm25_vector: dict[int, float]
